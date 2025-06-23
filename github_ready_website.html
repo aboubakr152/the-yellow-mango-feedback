@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Yellow Mango - Customer Feedback</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #F1C40F;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: #F39C12;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #2C3E50;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .header-text {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .subheader-text {
+            font-size: 1rem;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #F7DC6F;
+            box-shadow: 0 0 10px rgba(247, 220, 111, 0.5);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-happy {
+            background: #3498DB;
+            color: white;
+        }
+
+        .btn-happy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-unhappy {
+            background: #E74C3C;
+            color: white;
+        }
+
+        .btn-unhappy:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .btn-primary {
+            background: #F39C12;
+            color: white;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .btn-return {
+            background: #95A5A6;
+            color: white;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .btn-return:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.4);
+        }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 100px;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #F7DC6F;
+            box-shadow: 0 0 10px rgba(247, 220, 111, 0.5);
+        }
+
+        .message {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 10px;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .message-success {
+            background: #EBF3FD;
+            color: #3498DB;
+            border-left: 4px solid #3498DB;
+        }
+
+        .message-sorry {
+            background: #FDEDEC;
+            color: #E74C3C;
+            border-left: 4px solid #E74C3C;
+        }
+
+        .stars {
+            font-size: 3rem;
+            color: #F7DC6F;
+            margin: 20px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .flash-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #3498DB;
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: flashIn 0.5s ease-out;
+        }
+
+        @keyframes flashIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .countdown {
+            font-size: 1.1rem;
+            color: #F39C12;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">The Yellow Mango</div>
+        
+        <!-- Initial Form -->
+        <div id="initial-form">
+            <div class="header-text">This will only take about 30 seconds we promise</div>
+            <div class="subheader-text">Please provide accurate details so we can locate your Amazon order</div>
+            
+            <div class="form-group">
+                <label for="customer-name">Your Name:</label>
+                <input type="text" id="customer-name" placeholder="Enter your full name">
+            </div>
+            
+            <div class="form-group">
+                <label for="order-number">Order Number:</label>
+                <input type="text" id="order-number" placeholder="Enter your Amazon order number">
+            </div>
+            
+            <button class="btn btn-primary" onclick="proceedToSatisfaction()">Continue</button>
+        </div>
+
+        <!-- Satisfaction Question -->
+        <div id="satisfaction-question" class="hidden">
+            <div class="header-text">Were you happy with your order?</div>
+            <div class="button-group">
+                <button class="btn btn-happy" onclick="handleHappy()">Yes I am happy</button>
+                <button class="btn btn-unhappy" onclick="handleUnhappy()">No I am not satisfied</button>
+            </div>
+        </div>
+
+        <!-- Unhappy Path -->
+        <div id="unhappy-feedback" class="hidden">
+            <div class="message message-sorry">
+                We are so sorry we could not meet your expectations. Please provide feedback of what you didn't like specifically. Your feedback is very important to us as it genuinely helps us improve our products.
+            </div>
+            
+            <div class="form-group">
+                <label for="negative-feedback">What didn't you like?</label>
+                <textarea id="negative-feedback" placeholder="Please share your honest feedback..."></textarea>
+            </div>
+            
+            <button class="btn btn-primary" onclick="submitNegativeFeedback()">Submit Feedback</button>
+            <button class="btn btn-return" onclick="returnToStart()">← Return to Start</button>
+        </div>
+
+        <!-- Unhappy Thank You -->
+        <div id="unhappy-thankyou" class="hidden">
+            <div class="message message-success">
+                Thank you so much for your feedback. Your response is being processed. We will match it with your order number and we will process your $5 feedback reward within the next few business days. We wish you all the best and thank you for shopping with The Yellow Mango.
+            </div>
+        </div>
+
+        <!-- Happy Path -->
+        <div id="happy-feedback" class="hidden">
+            <div class="message message-success">
+                We are glad you are happy with the product you ordered! Please give us some feedback about what you liked.
+            </div>
+            
+            <div class="form-group">
+                <label for="positive-feedback">What did you like about your order?</label>
+                <textarea id="positive-feedback" placeholder="Tell us what you loved about your experience..."></textarea>
+            </div>
+            
+            <button class="btn btn-primary" onclick="submitPositiveFeedback()">Submit Feedback</button>
+        </div>
+
+        <!-- Review Instructions -->
+        <div id="review-instructions" class="hidden">
+            <div class="message message-success">
+                Your feedback has been copied to your clipboard! Please share it as a 5 star review on Amazon.
+            </div>
+            
+            <button class="btn btn-primary" onclick="shareReview()">Share as 5 Star Review on Amazon</button>
+        </div>
+
+        <!-- Final Review Steps -->
+        <div id="final-steps" class="hidden">
+            <div class="stars">⭐⭐⭐⭐⭐</div>
+            <div class="message message-success">
+                Please select 5 stars, click paste in the form and submit.
+                <br><br>
+                Your Amazon review page will open automatically now and your $5 feedback reward will be processed soon!
+                <div class="countdown" id="countdown">Opening Amazon in 6 seconds...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script>
+        let customerData = {};
+
+        // EmailJS Configuration - REPLACE THESE WITH YOUR ACTUAL VALUES
+        const EMAILJS_PUBLIC_KEY = 'YOUR_EMAILJS_PUBLIC_KEY'; 
+        const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'; 
+        const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; 
+        const YOUR_EMAIL = 'your-email@example.com'; 
+
+        // Initialize EmailJS
+        if (EMAILJS_PUBLIC_KEY !== 'YOUR_EMAILJS_PUBLIC_KEY') {
+            emailjs.init(EMAILJS_PUBLIC_KEY);
+        }
+
+        function sendFeedbackEmail(data) {
+            if (EMAILJS_PUBLIC_KEY === 'YOUR_EMAILJS_PUBLIC_KEY') {
+                saveFeedbackLocally(data);
+                return;
+            }
+
+            const templateParams = {
+                to_email: YOUR_EMAIL,
+                customer_name: data.name,
+                order_number: data.orderNumber,
+                satisfaction: data.satisfied ? 'Satisfied' : 'Not Satisfied',
+                feedback: data.feedback,
+                timestamp: new Date().toLocaleString(),
+                reward_amount: '$5'
+            };
+
+            emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, templateParams)
+                .then(function(response) {
+                    console.log('Feedback sent successfully!', response.status, response.text);
+                }, function(error) {
+                    console.log('Failed to send feedback:', error);
+                    saveFeedbackLocally(data);
+                });
+        }
+
+        function saveFeedbackLocally(data) {
+            const existingFeedback = JSON.parse(localStorage.getItem('yellowMangoFeedback') || '[]');
+            data.timestamp = new Date().toISOString();
+            existingFeedback.push(data);
+            localStorage.setItem('yellowMangoFeedback', JSON.stringify(existingFeedback));
+            
+            console.log('Feedback saved locally. To receive emails, set up EmailJS at emailjs.com');
+            console.log('Feedback data:', data);
+        }
+
+        function returnToStart() {
+            document.getElementById('satisfaction-question').classList.add('hidden');
+            document.getElementById('unhappy-feedback').classList.add('hidden');
+            document.getElementById('unhappy-thankyou').classList.add('hidden');
+            document.getElementById('happy-feedback').classList.add('hidden');
+            document.getElementById('review-instructions').classList.add('hidden');
+            document.getElementById('final-steps').classList.add('hidden');
+            
+            document.getElementById('initial-form').classList.remove('hidden');
+            
+            document.getElementById('customer-name').value = '';
+            document.getElementById('order-number').value = '';
+            document.getElementById('negative-feedback').value = '';
+            document.getElementById('positive-feedback').value = '';
+            
+            customerData = {};
+        }
+
+        function proceedToSatisfaction() {
+            const name = document.getElementById('customer-name').value.trim();
+            const orderNumber = document.getElementById('order-number').value.trim();
+            
+            if (!name || !orderNumber) {
+                alert('Please fill in both your name and order number.');
+                return;
+            }
+            
+            customerData.name = name;
+            customerData.orderNumber = orderNumber;
+            
+            document.getElementById('initial-form').classList.add('hidden');
+            document.getElementById('satisfaction-question').classList.remove('hidden');
+        }
+
+        function handleUnhappy() {
+            document.getElementById('satisfaction-question').classList.add('hidden');
+            document.getElementById('unhappy-feedback').classList.remove('hidden');
+        }
+
+        function submitNegativeFeedback() {
+            const feedback = document.getElementById('negative-feedback').value.trim();
+            
+            if (!feedback) {
+                alert('Please provide your feedback before submitting.');
+                return;
+            }
+            
+            customerData.feedback = feedback;
+            customerData.satisfied = false;
+            
+            sendFeedbackEmail(customerData);
+            
+            document.getElementById('unhappy-feedback').classList.add('hidden');
+            document.getElementById('unhappy-thankyou').classList.remove('hidden');
+        }
+
+        function handleHappy() {
+            document.getElementById('satisfaction-question').classList.add('hidden');
+            document.getElementById('happy-feedback').classList.remove('hidden');
+        }
+
+        function submitPositiveFeedback() {
+            const feedback = document.getElementById('positive-feedback').value.trim();
+            
+            if (!feedback) {
+                alert('Please provide your feedback before submitting.');
+                return;
+            }
+            
+            customerData.feedback = feedback;
+            customerData.satisfied = true;
+            
+            sendFeedbackEmail(customerData);
+            
+            navigator.clipboard.writeText(feedback).then(function() {
+                document.getElementById('happy-feedback').classList.add('hidden');
+                document.getElementById('review-instructions').classList.remove('hidden');
+            }).catch(function(err) {
+                document.getElementById('happy-feedback').classList.add('hidden');
+                document.getElementById('review-instructions').classList.remove('hidden');
+            });
+        }
+
+        function shareReview() {
+            const flashMessage = document.createElement('div');
+            flashMessage.className = 'flash-message';
+            flashMessage.textContent = 'Your feedback has been copied to your clipboard';
+            document.body.appendChild(flashMessage);
+            
+            setTimeout(() => {
+                document.body.removeChild(flashMessage);
+            }, 2000);
+            
+            document.getElementById('review-instructions').classList.add('hidden');
+            document.getElementById('final-steps').classList.remove('hidden');
+            
+            let seconds = 6;
+            const countdownElement = document.getElementById('countdown');
+            
+            const countdownInterval = setInterval(() => {
+                seconds--;
+                countdownElement.textContent = `Opening Amazon in ${seconds} seconds...`;
+                
+                if (seconds <= 0) {
+                    clearInterval(countdownInterval);
+                    window.open('https://www.amazon.com/review/create-review/error?ie=UTF8&channel=glance-detail&asin=B0F82Z2C52', '_blank');
+                }
+            }, 1000);
+        }
+
+        function viewCollectedFeedback() {
+            const feedback = localStorage.getItem('yellowMangoFeedback');
+            if (feedback) {
+                console.log('Collected Feedback:', JSON.parse(feedback));
+                return JSON.parse(feedback);
+            } else {
+                console.log('No feedback collected yet.');
+                return [];
+            }
+        }
+    </script>
+</body>
+</html>
